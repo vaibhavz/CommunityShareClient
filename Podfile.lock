@@ -1,0 +1,24 @@
+PODS:
+  - ColorSlider (4.3)
+  - GoogleMaps (2.7.0):
+    - GoogleMaps/Maps (= 2.7.0)
+  - GoogleMaps/Base (2.7.0)
+  - GoogleMaps/Maps (2.7.0):
+    - GoogleMaps/Base
+
+DEPENDENCIES:
+  - ColorSlider (~> 4.3)
+  - GoogleMaps
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - ColorSlider
+    - GoogleMaps
+
+SPEC CHECKSUMS:
+  ColorSlider: 83fb6f174a13d7235ef100d8d5fee1f71adf2182
+  GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
+
+PODFILE CHECKSUM: 75a3dc1703efaef92275a47b569571279e36db47
+
+COCOAPODS: 1.5.3
