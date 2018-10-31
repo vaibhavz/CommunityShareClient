@@ -11,12 +11,11 @@ import Foundation
 
 
 class CreatNewUserPresenter  {
-    
     init() {}
     weak fileprivate var view: CreatNewUserView?
     fileprivate var presntorLocation = LocationPresenter()
     private var currentUserLocation : Location?
-   
+    
     func attachView(_ view: CreatNewUserView) {
         self.view = view
         presntorLocation.attachIntrector(self)
@@ -27,35 +26,6 @@ class CreatNewUserPresenter  {
         self.view  = nil
     }
     
-    /*
-    func getUserData(name:String?,color:String?,pin:String?,location: Location?)  {
-        
-        guard let userName = name  else
-        {
-            self.view?.validationError(msg: "Enter user name")
-            return
-        }
-        guard let colorCycle = color  else {
-            self.view?.validationError(msg: "Enter of the Cycle")
-            return
-        }
-        guard let pinLock = pin else {
-            self.view?.validationError(msg: "Lock code")
-            return
-        }
-        guard let locationUser = location else {
-           // self.view?.validationError(msg: "Go to Setting and Turn ON Location")
-            self.view?.errorObtainLocation()
-            return
-        }
-        
-
-        
-        let model = BikeRootModel(name: userName, color: colorCycle, location: locationUser, pin: pinLock)
-        self.addBikeToSystem(data: model)
-    }
- */
-    
     func getUserData(name:String?,color:String?,pin:String?)  {
         
         guard let userName = name, !(userName.isEmpty) else
@@ -63,7 +33,7 @@ class CreatNewUserPresenter  {
             self.view?.validationError(msg: "Enter user name")
             return
         }
-    
+        
         guard let pinLock = pin,!(pinLock.isEmpty)  else {
             self.view?.validationError(msg: "Lock code")
             return
@@ -82,30 +52,28 @@ class CreatNewUserPresenter  {
         let model = BikeRootModel(name: userName, color: colorCycle, location: locationUser, pin: pinLock)
         self.addBikeToSystem(data: model)
     }
+
+    private func addBikeToSystem(data : BikeRootModel) {
         
-    
-    
-   private func addBikeToSystem(data : BikeRootModel) {
-            
-            let payload =  data.payload()
-            let header : NSDictionary = ["Content-Type" : "application/json"]
-            
+        let payload =  data.payload()
+        let header : NSDictionary = ["Content-Type" : "application/json"]
+        
         _ = NetworkInterface.postRequest(.createNewBike, headers: header, params: nil, payload: payload , requestCompletionHander: { (flag, data, response, error, hash) -> (Void) in
+            
+            if (flag){
+                let data =  String(data: data as! Data, encoding: .utf8)
                 
-                if (flag){
-                    let data =  String(data: data as! Data, encoding: .utf8)
-                    
-                    guard let  message = data  else{
-                        self.view?.errorResponse()
-                        return}
-                    self.view?.successfulCompletion(msg: message )
-                }else{
+                guard let  message = data  else{
                     self.view?.errorResponse()
-
-                }
-              
-    })
-
+                    return}
+                self.view?.successfulCompletion(msg: message )
+            }else{
+                self.view?.errorResponse()
+                
+            }
+            
+        })
+        
     }
     
 }
@@ -113,7 +81,7 @@ class CreatNewUserPresenter  {
 extension CreatNewUserPresenter : LocationIntrector {
     
     func updateCurrentLocation(location: Location) {
-         currentUserLocation = location
+        currentUserLocation = location
     }
     
     func currentLocationName(name: String) {

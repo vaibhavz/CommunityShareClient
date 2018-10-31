@@ -14,13 +14,13 @@ class RentBikePresenter  {
     
     weak fileprivate var userView: RentBikeView?
     fileprivate var presntorLocation = LocationPresenter()
-
+    
     private let  bikeModel : BikeRootModel
-
+    
     init(data : BikeRootModel) {
         bikeModel = data
     }
-   
+    
     
     func attachView(_ view: RentBikeView) {
         userView = view
@@ -30,7 +30,7 @@ class RentBikePresenter  {
         presntorLocation.currentDistanceCal(location:  bikeModel.location)
     }
     
-     func detachView() {
+    func detachView() {
         userView = nil
     }
     
@@ -52,19 +52,18 @@ class RentBikePresenter  {
                     self.userView?.errorResponse()
                     return
                 }
-                
                 self.userView?.successfulCompletion(msg: message)
                 UserDefaults.standard.setRented(value: true)
                 UserDefaults.standard.synchronize()
             }
-                else{
+            else{
                 self.userView?.errorResponse()
-                }
-
-         
+            }
+            
+            
         })
     }
-
+    
 }
 
 
@@ -73,7 +72,7 @@ extension RentBikePresenter :LocationIntrector {
     func nearByFromCurrentLocation(distance:String){
         userView?.nearByFromCurrentLocation(distance: distance)
     }
-
-
+    
+    
 }
 

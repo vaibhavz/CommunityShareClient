@@ -26,44 +26,42 @@ extension LocationIntrector {
     func currentLocationName(name: String){}
     func errorObtainLocation(){}
     func nearByFromCurrentLocation(distance:String){}
-
+    
 }
 
-
 class LocationPresenter : NSObject {
-    
     private var locationIntrector: LocationIntrector? // to communicte between Presentor
     override init() {}
     var locManager = CLLocationManager()
-
+    
     func attachIntrector(_ intrector: LocationIntrector)  {
-         locationIntrector = intrector
-         currentLocation()
+        locationIntrector = intrector
+        currentLocation()
     }
-
+    
     func currentLocation() {
-
+        
         locManager.requestWhenInUseAuthorization()
-
+        
         if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
             CLLocationManager.authorizationStatus() == .authorizedAlways) {
-
+            
             guard let currentLocation = locManager.location else {
                 locationIntrector?.errorObtainLocation()
                 return
             }
             let location = Location.init(lat: Float(currentLocation.coordinate.latitude), long: Float(currentLocation.coordinate.longitude))
-          //  currentLocationView?.currentLocation(location: location)
+            //  currentLocationView?.currentLocation(location: location)
             self.placeInfomation(location: location)
             self.locationIntrector?.updateCurrentLocation(location: location)
         } else {
-
+            
             locationIntrector?.errorObtainLocation()
         }
     }
-
-
-     func placeInfomation(location: Location) {
+    
+    
+    func placeInfomation(location: Location) {
         let geocoder: GMSGeocoder = GMSGeocoder()
         let lat = CLLocationDegrees(location.latitude)
         let long = CLLocationDegrees(location.longitude)
@@ -76,21 +74,21 @@ class LocationPresenter : NSObject {
                     return
                 }
                 let location = Location.init(lat: Float(gmsAddress.coordinate.latitude), long: Float(gmsAddress.coordinate.longitude))
-               // self.currentLocationView?.currentLocationName(name: cityName, location: location)
+                // self.currentLocationView?.currentLocationName(name: cityName, location: location)
                 self.locationIntrector?.updateCurrentLocation(location: location)
                 self.locationIntrector?.currentLocationName(name: cityName)
             } else {
                 self.locationIntrector?.errorObtainLocation()
             }
-
+            
         }
     }
     
-     func currentDistanceCal(location:Location)  {
+    func currentDistanceCal(location:Location)  {
         guard let currentLocation = locManager.location else {
             self.locationIntrector?.errorObtainLocation()
             self.locationIntrector?.nearByFromCurrentLocation(distance: "")
-        return
+            return
         }
         let lat =  CLLocationDegrees(location.latitude)
         let long =  CLLocationDegrees(location.longitude)
@@ -106,19 +104,19 @@ class LocationPresenter : NSObject {
             switch CLLocationManager.authorizationStatus() {
             case .notDetermined, .restricted, .denied:
                 print("No access")
-            locationIntrector?.errorObtainLocation()
+                locationIntrector?.errorObtainLocation()
             case .authorizedAlways, .authorizedWhenInUse:
                 print("Access")
                 self.currentLocation()
             }
         } else {
             print("Location services are not enabled")
-             locationIntrector?.errorObtainLocation()
+            locationIntrector?.errorObtainLocation()
         }
     }
     
     //&key=**************
-  /// not used 
+    /// not used
     func getPolylineFromCurrentLocation(destination: Location){
         
         guard let currentLocation = locManager.location else {
@@ -128,7 +126,7 @@ class LocationPresenter : NSObject {
         
         let lat =   currentLocation.coordinate.latitude
         let log =  currentLocation.coordinate.longitude
-
+        
         let url = URL(string: "https://maps.googleapis.com/maps/api/directions/json?origin=\(lat),\(log)&destination=\(destination.latitude),\(destination.longitude)&key=AIzaSyBi0mPF9Lg04q46HrMsKRy3otqKC-eNpz8")
         let task = URLSession.shared.dataTask(with: url!) { (data:Data?, response:URLResponse?, error:Error?) in
             if let data = data {
@@ -149,12 +147,5 @@ class LocationPresenter : NSObject {
         }
         task.resume()
     }
-
-    
-
 }
-
-//extension LocationPresenter : CLLocationManagerDelegate {
-//
-//}
 

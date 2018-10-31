@@ -12,7 +12,7 @@ protocol NearByBikeView: LocationIntrector {
     func nearByBikes(bikeInfo: [BikeRootModel])
     func failToFind()
     func getAllBike(bikeInfo: [BikeRootModel])
-
+    
 }
 
 extension NearByBikeView {

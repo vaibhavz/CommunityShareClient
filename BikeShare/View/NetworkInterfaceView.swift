@@ -8,10 +8,6 @@
 
 import Foundation
 
-
-
-
-
 protocol NetworkInterfaceView : class {
     func successfulCompletion(msg: String)
     func errorResponse()
@@ -26,13 +22,11 @@ protocol RentBikeView : NetworkInterfaceView,LocationIntrector {
 extension RentBikeView {
     func rentBikeCurrentLocation(location : Location){}
     func alreadyRented(){}
-
+    
 }
 protocol CreatNewUserView : NetworkInterfaceView ,LocationIntrector{
     func validationError(msg : String)
 }
-
-
 
 protocol ReturnBikeView : RentBikeView{
     func returnBikeComplited()

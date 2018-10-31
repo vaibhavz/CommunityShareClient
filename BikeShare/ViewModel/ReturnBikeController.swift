@@ -62,9 +62,7 @@ extension ReturnBikeController : ReturnBikeView {
     
     func successfulCompletion(msg: String) {
         self.btnSubmit.isUserInteractionEnabled = true
-        self.btnSubmit.setTitle("Return Bike", for: .normal)
-        
-        
+        self.btnSubmit.setTitle("Return Bike", for: .normal)        
         if !msg.isEmpty {
             self.alert(message: msg)
         }

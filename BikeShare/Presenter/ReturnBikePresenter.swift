@@ -55,34 +55,14 @@ class ReturnBikePresenter  {
         })
     }
     
-    
-//  private func updateCurrentLocation(bike: BikeRootModel){
-//
-//        let data = bike.payload()
-//        let header : NSDictionary = ["Content-Type" : "application/json"]
-//        let id  = bike.id! //"2"//UserDefaults.standard.getUserID()
-//        _ = NetworkInterface.putRequestWithID(.updateBike, headers: header, extendIdUrl: id, params: nil, payload: data, requestCompletionHander: { (flag, data, response, error, hash) -> (Void) in
-//            let data =  String(data: data as! Data, encoding: .utf8)
-//            guard let message = data  else {
-//               self.userView?.errorResponse()
-//                return
-//            }
-//            self.userView?.successfulCompletion(msg: message)
-//        })
-//    }
-    
-    
-    
     func updateBikeCurrentLocation(location: Location){
         
         if (location.latitude.isZero && location.longitude.isZero) {
             self.userView?.errorObtainLocation()
             return
         }
-        
         guard var bike =  self.rentedBike else {return}
         bike.location = location
-
         let data = bike.payload()
         let header : NSDictionary = ["Content-Type" : "application/json"]
         let id  = bike.id! //"2"//UserDefaults.standard.getUserID()
@@ -94,10 +74,7 @@ class ReturnBikePresenter  {
             }
             self.userView?.successfulCompletion(msg: message)
         })
-        
     }
-    
- 
 }
 
 extension ReturnBikePresenter : LocationIntrector {
@@ -107,23 +84,21 @@ extension ReturnBikePresenter : LocationIntrector {
     }
     
     func updateCurrentLocation(location: Location){
-        
         self.updateBikeCurrentLocation(location: location)
-
     }
 }
 
 extension ReturnBikePresenter : NearByBikeView {
-   
+    
     func failToFind() {
-
+        
     }
-   
+    
     func getAllBike(bikeInfo: [BikeRootModel]){
         rentedBike = bikeInfo.filter(){$0.rented!}.first
         userView?.userDetail(data: rentedBike!)
         presntorLocation.attachIntrector(self) // update current location
     }
-
+    
 }
 

@@ -9,7 +9,7 @@
 import UIKit
 import GoogleMaps
 class RentBikeController: UIViewController {
-
+    
     @IBOutlet  weak private var lblName: UILabel!
     @IBOutlet  weak private var lblDistance: UILabel!
     @IBOutlet  weak private var colorOfBike: UIView!
@@ -25,14 +25,14 @@ class RentBikeController: UIViewController {
         self.title = Title.rentBike
         self.btnSubmit.setTitle("Buy for Rent", for: .normal)
         presenter?.attachView(self)
-
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     
     @IBAction func buyRent(_ sender: Any) {
         presenter?.rentBike()
@@ -44,12 +44,12 @@ class RentBikeController: UIViewController {
 
 
 extension RentBikeController : RentBikeView  {
-   
+    
     func rentBikeCurrentLocation(location: Location) {
         self.googleMapUI(current: location)
     }
     
-
+    
     func nearByFromCurrentLocation(distance: String) {
         self.lblDistance.text = "Near By :" + distance
     }
@@ -61,9 +61,9 @@ extension RentBikeController : RentBikeView  {
     }
     
     func successfulCompletion(msg: String) {
-       
+        
         if (msg.isEmpty){
-             self.navigationController?.popViewController(animated: true)
+            self.navigationController?.popViewController(animated: true)
         }else{
             self.alert(message: msg)
         }
@@ -82,7 +82,7 @@ extension RentBikeController : RentBikeView  {
         self.alert(message: "Your already rented one buy, Please return it")
     }
     
-
+    
     
     func googleMapUI(current:Location) {
         let camera = GMSCameraPosition.camera(withLatitude: CLLocationDegrees(current.latitude), longitude: CLLocationDegrees(current.longitude), zoom: 13.0)

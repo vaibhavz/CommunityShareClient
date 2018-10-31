@@ -21,27 +21,21 @@ class NearByBikeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-    
-      self.navigationItem.title = Title.dashboard
-       presenter = SearchNearByPresenter()
-       presenter?.attachView(self)
-       presenter?.allBikeInfo()
-       mapView.delegate = self
-    self.collectionView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        
-
-
+        self.navigationItem.title = Title.dashboard
+        presenter = SearchNearByPresenter()
+        presenter?.attachView(self)
+        presenter?.allBikeInfo()
+        mapView.delegate = self
+        self.collectionView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-             presenter?.allBikeInfo()
-             self.btnReturn.isEnabled = UserDefaults.standard.isRented()
-  
+        presenter?.allBikeInfo()
+        self.btnReturn.isEnabled = UserDefaults.standard.isRented()
+        
     }
     
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(enterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
@@ -57,10 +51,6 @@ class NearByBikeController: UIViewController {
         presenter?.reflashLocation()
     }
     
-  
-    
-    
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -70,19 +60,19 @@ class NearByBikeController: UIViewController {
         
         if segue.identifier == "detail" {
             
-                let controller = segue.destination as! RentBikeController
-                controller.presenter = RentBikePresenter(data: seletedBike!)
+            let controller = segue.destination as! RentBikeController
+            controller.presenter = RentBikePresenter(data: seletedBike!)
             
-            }
         }
-        
+    }
+    
     @IBAction func btnReturnBtnAction(_ sender: Any) {
-     
+        
         self.performSegue(withIdentifier: "return", sender: self)
         
     }
     @IBAction func addBikeBtnAction(_ sender: Any) {
-      
+        
         
     }
     @IBAction func segmentBtnAction(_ sender: UISegmentedControl) {
@@ -99,12 +89,12 @@ class NearByBikeController: UIViewController {
     }
     
     
-   
+    
 }
 
 
-    
-    
+
+
 
 
 
@@ -130,11 +120,11 @@ extension NearByBikeController : MKMapViewDelegate {
 
 
 extension NearByBikeController : NearByBikeView {
-   
+    
     func errorObtainLocation(){
         self.createSettingsAlertController(title: "Location Off", message: "Please turn on Location")
     }
-
+    
     
     func nearByBikes(bikeInfo: [BikeRootModel]) {
         
@@ -150,7 +140,7 @@ extension NearByBikeController : NearByBikeView {
             annotation.title = info.name
             mapView.addAnnotation(annotation)
             mapView.showAnnotations(mapView.annotations, animated: true)
-
+            
         }
         listOfCycle = bikeInfo
         
@@ -161,19 +151,17 @@ extension NearByBikeController : NearByBikeView {
         }
         
         self.collectionView.reloadData()
-
+        
     }
     func failToFind() {
         
     }
-
+    
     
 }
 
 
 extension NearByBikeController : UICollectionViewDelegate,UICollectionViewDataSource {
-
-   
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -208,7 +196,7 @@ extension NearByBikeController : UICollectionViewDelegateFlowLayout {
         return CGSize(width: collectionViewWidth/3, height: collectionViewWidth/3)
     }
     
-
+    
 }
 
 
